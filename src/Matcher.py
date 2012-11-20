@@ -29,6 +29,19 @@ class Matcher:
             for link in state.connections:
                 if link.value == self.currentChar or link.value=="":
                     self.setActiveNode(link.state)
+        self.getEpsilons(self.activeNodes)
+    
+    def getEpsilons(self, newNodes):
+        tempNewNodes = []
+        for state in newNodes:
+            for link in state.connections:
+                if link.value=="":
+                    tempNewNodes.append(link.state)
+                    self.setActiveNode(link.state)
+        if len(newNodes) == 0:
+            return
+        newNodes = self.getEpsilons(tempNewNodes)
+        
 
     def isAcceptingState(self):
         for state in self.activeNodes:
