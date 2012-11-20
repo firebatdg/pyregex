@@ -69,7 +69,28 @@ class Regex:
         stack = []
         unary = ("*","+","?")
         binary = ("|",".")
+        while len(postfix_regex):
+            char = postfix_regex[0]
+            postfix_regex = postfix_regex[1:]
+            if self.is_char(char):
+                stack.append(Container(char))
+            elif char in unary:
+                op = stack.pop()
+                if char == "*":
+                    stack.append(ZeroOrMore(op))
+                elif char == "+":
+                    stack.append(OneOrMore(op))
+                elif char == "?":
+                    stack.append(ZeroOrOne(op))
+            elif char in binary:
+                op1 = stack.pop()
+                op2 = stack.pop()
+                if char == ".":
+                    stack.append(Concat(op1,op2))
+                elif char == "|":
+                    stack.append(Or(op1,op2))
 
+        return stack.pop()
 
 if __name__ == "__main__":
         r = Regex("as*sad+asd")
