@@ -1,7 +1,7 @@
 
 from Container import *
 
-class Or(OneOrMore):
+class ZeroOrOne(Container):
 
     def __init__(self, cont1):
         self.start = cont1.start

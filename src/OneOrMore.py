@@ -1,7 +1,7 @@
 
 from Container import *
 
-class Or(OneOrMore):
+class OneOrMore(Container):
 
     def __init__(self, cont1):
         cont1.end.connections.append(Link(cont1.start,""))

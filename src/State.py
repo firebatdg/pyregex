@@ -6,6 +6,6 @@ class State:
         self.connections=[]
         self.accepting = accepting
 
-    def addLink(node, value):
+    def addLink(self, node, value):
         self.connections.append(Link(node,value))
 

@@ -2,6 +2,13 @@
 
 from State import *
 from Link import *
+from Matcher import *
+from Concat import *
+from Container import *
+from Or import *
+from ZeroOrOne import *
+from ZeroOrMore import *
+from OneOrMore import *
 
 class Regex:
 
@@ -96,5 +103,13 @@ if __name__ == "__main__":
         r = Regex("as*sad+asd")
         reg = r.add_concatenation("a(bb|cc)+c")
         print(reg)
-        print(r.get_postfix(reg))
+        postfix = r.get_postfix(reg)
+        print(postfix)
+        NFA = r.get_nfa(postfix)
+        word1 = "abbc"
+        word2 = "abc"
+        m = Matcher(NFA.start, word1)
+        print(m.searchMatch(word1))
+        m = Matcher(NFA.start,word2)
+        print (m.searchMatch(word2))
 
