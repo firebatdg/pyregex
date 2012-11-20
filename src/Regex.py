@@ -13,9 +13,25 @@ class Regex:
     def init_nfa(self):
         expr = self.get_postfix(self.regex_str)
 
+    def add_concatenation(self, regexstr):
+        tmp = ".".join(list(regexstr)).replace("(.","(").replace(".)",")")
+        tmp = tmp.replace(".+","+")
+        tmp = tmp.replace(".*","*")
+        tmp = tmp.replace(".?","?")
+        tmp = tmp.replace(".|","|")
+        return tmp
+
     def get_postfix(self, regexstr):
         output=""
         stack = []
+        ops = {
+                "*" : 3,
+                "+" : 3,
+                "?" : 3,
+                "." : 2,
+                "|" : 1
+        }
+
         while len(regexstr) != 0:
             if self.is_char(regexstr[0]):
                 output = output + regexstr[0]
@@ -33,15 +49,10 @@ class Regex:
                             break
                         else:
                             output = output + stackchar
-                elif char in ('*','+','?'):
-                    while len(stack) > 0:
-                        if stack[-1] in ('*','+','?'):
+                else:
+                    while len(stack) > 0 and self.is_operator(stack[-1]) and  ops[char] <= ops[stack[-1]]:
                             output = output + stack.pop()
-                        else:
-                            break
                     stack.append(char)
-                elif char == '|':
-                    pass
 
         while len(stack) >0:
             output = output + stack.pop()
@@ -49,9 +60,12 @@ class Regex:
 
     def is_char(self, char):
         return char not in ('(', ')', '*', '+', '?', '|', '.')
-
+    def is_operator(self, char):
+        return char in ('*', '+', '?', '.', '|')
 
 if __name__ == "__main__":
         r = Regex("as*sad+asd")
-        print r.get_postfix("a(bb)+c")
+        reg = r.add_concatenation("a(bb)+c")
+        print(reg)
+        print(r.get_postfix(reg))
 
