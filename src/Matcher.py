@@ -23,13 +23,14 @@ class Matcher:
             return False
 
     def getPossiblePaths (self):
+        self.getEpsilons(self.activeNodes)
         tempActiveNodes = self.activeNodes
         self.activeNodes = []
         for state in tempActiveNodes:
             for link in state.connections:
                 if link.value == self.currentChar or link.value=="":
                     self.setActiveNode(link.state)
-        self.getEpsilons(self.activeNodes)
+        
     
     def getEpsilons(self, newNodes):
         tempNewNodes = []
