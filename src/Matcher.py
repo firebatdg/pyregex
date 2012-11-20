@@ -17,10 +17,10 @@ class Matcher:
             self.getPossiblePaths()
             if len(self.activeNodes) == 0:
                 return False
-        if isAcceptingSatate:
-            return true
+        if self.isAcceptingState():
+            return True
         else:
-            return false
+            return False
 
     def getPossiblePaths (self):
         tempActiveNodes = self.activeNodes
@@ -28,13 +28,13 @@ class Matcher:
         for state in tempActiveNodes:
             for link in state.connections:
                 if link.value == self.currentChar or link.value=="":
-                    setActiveNode(link.state)
+                    self.setActiveNode(link.state)
 
     def isAcceptingState(self):
         for state in self.activeNodes:
             if state.accepting:
-                return true
-        return false
+                return True
+        return False
 
     def setActiveNode(self, state):
         if state not in self.activeNodes:

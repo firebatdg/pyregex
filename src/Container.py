@@ -8,8 +8,8 @@ class Container:
         s = State()
         e = State(True)
         s.addLink(e,string)
-        self.start = e
-        self.end = s
+        self.start = s
+        self.end = e
 
 
 

@@ -76,7 +76,7 @@ class Regex:
         stack = []
         unary = ("*","+","?")
         binary = ("|",".")
-        while len(postfix_regex):
+        while len(postfix_regex) > 0:
             char = postfix_regex[0]
             postfix_regex = postfix_regex[1:]
             if self.is_char(char):
@@ -90,24 +90,30 @@ class Regex:
                 elif char == "?":
                     stack.append(ZeroOrOne(op))
             elif char in binary:
-                op1 = stack.pop()
                 op2 = stack.pop()
+                op1 = stack.pop()
                 if char == ".":
                     stack.append(Concat(op1,op2))
                 elif char == "|":
                     stack.append(Or(op1,op2))
-
+        print("Stack!")
         return stack.pop()
+
+    def to_str(self, nfa):
+        print(nfa.connections)
+        for c in nfa.connections:
+            self.to_str(c.state)
 
 if __name__ == "__main__":
         r = Regex("as*sad+asd")
-        reg = r.add_concatenation("a(bb|cc)+c")
+        reg = r.add_concatenation("ab?bc")
         print(reg)
         postfix = r.get_postfix(reg)
         print(postfix)
         NFA = r.get_nfa(postfix)
         word1 = "abbc"
         word2 = "abc"
+        print (r.to_str(NFA.start))
         m = Matcher(NFA.start, word1)
         print(m.searchMatch(word1))
         m = Matcher(NFA.start,word2)
