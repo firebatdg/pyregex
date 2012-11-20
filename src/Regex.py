@@ -19,6 +19,7 @@ class Regex:
         tmp = tmp.replace(".*","*")
         tmp = tmp.replace(".?","?")
         tmp = tmp.replace(".|","|")
+        tmp = tmp.replace("|.","|")
         return tmp
 
     def get_postfix(self, regexstr):
@@ -63,9 +64,16 @@ class Regex:
     def is_operator(self, char):
         return char in ('*', '+', '?', '.', '|')
 
+
+    def get_nfa(self, postfix_regex):
+        stack = []
+        unary = ("*","+","?")
+        binary = ("|",".")
+
+
 if __name__ == "__main__":
         r = Regex("as*sad+asd")
-        reg = r.add_concatenation("a(bb)+c")
+        reg = r.add_concatenation("a(bb|cc)+c")
         print(reg)
         print(r.get_postfix(reg))
 
