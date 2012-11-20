@@ -1,5 +1,5 @@
-
-
+import re
+import datetime
 from State import *
 from Link import *
 from Matcher import *
@@ -100,22 +100,39 @@ class Regex:
         return stack.pop()
 
     def to_str(self, nfa):
-        print(nfa.connections)
+        print("Connections: %s" % nfa.connections)
         for c in nfa.connections:
             self.to_str(c.state)
 
 if __name__ == "__main__":
         r = Regex("as*sad+asd")
-        reg = r.add_concatenation("ab?bc")
+        word1 = ""
+        regex = ""
+        for i in range(30):
+            word1 = word1 + "a"
+            regex = regex + "a?"
+        regex = regex + word1
+        print("Word: %s" % word1)
+        reg = r.add_concatenation(regex)
         print(reg)
         postfix = r.get_postfix(reg)
         print(postfix)
         NFA = r.get_nfa(postfix)
-        word1 = "abbc"
-        word2 = "abc"
-        print (r.to_str(NFA.start))
+        word2 = "abbc"
+        #print("NFA:")
+        #print (r.to_str(NFA.start))
         m = Matcher(NFA.start, word1)
+        t1 = datetime.datetime.utcnow()
         print(m.searchMatch(word1))
-        m = Matcher(NFA.start,word2)
-        print (m.searchMatch(word2))
+        t2 = datetime.datetime.utcnow()
+        delta = t2-t1
+        print("%s.%s" % (delta.seconds, delta.microseconds))
+
+        t3 = datetime.datetime.utcnow()
+        print(re.match(regex,word1))
+        print ("hello!")
+        t4 = datetime.datetime.utcnow()
+        delta = t4-t3
+
+        print("%s.%s" % (delta.seconds, delta.microseconds))
 
