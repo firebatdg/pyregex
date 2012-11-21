@@ -96,11 +96,11 @@ class Regex:
                     stack.append(Concat(op1,op2))
                 elif char == "|":
                     stack.append(Or(op1,op2))
-        print("Stack!")
+        #print("Stack!")
         return stack.pop()
 
     def to_str(self, nfa):
-        print("Connections: %s" % nfa.connections)
+        #print("Connections: %s" % nfa.connections)
         for c in nfa.connections:
             self.to_str(c.state)
 
@@ -112,27 +112,31 @@ if __name__ == "__main__":
             word1 = word1 + "a"
             regex = regex + "a?"
         regex = regex + word1
-        print("Word: %s" % word1)
+        print("- Word: %s" % word1)
         reg = r.add_concatenation(regex)
-        print(reg)
+        print("- Regex: " +reg)
         postfix = r.get_postfix(reg)
-        print(postfix)
+        #print(postfix)
         NFA = r.get_nfa(postfix)
         word2 = "abbc"
         #print("NFA:")
         #print (r.to_str(NFA.start))
         m = Matcher(NFA.start, word1)
         t1 = datetime.datetime.utcnow()
+        print("Our implementation ")
+        print("Match?: ")
         print(m.searchMatch(word1))
         t2 = datetime.datetime.utcnow()
         delta = t2-t1
-        print("%s.%s" % (delta.seconds, delta.microseconds))
+        print("Time:  %s.%s" % (delta.seconds, delta.microseconds))
 
         t3 = datetime.datetime.utcnow()
+        print ("Python implementation ")
+        print("Match?: ")
         print(re.match(regex,word1))
-        print ("hello!")
+        
         t4 = datetime.datetime.utcnow()
         delta = t4-t3
 
-        print("%s.%s" % (delta.seconds, delta.microseconds))
+        print("Time:  %s.%s" % (delta.seconds, delta.microseconds))
 
