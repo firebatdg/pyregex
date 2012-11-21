@@ -1,3 +1,4 @@
+import sys
 import re
 import datetime
 from State import *
@@ -105,13 +106,19 @@ class Regex:
             self.to_str(c.state)
 
 if __name__ == "__main__":
-        r = Regex("as*sad+asd")
+        r = Regex("")
         word1 = ""
         regex = ""
-        for i in range(30):
+
+        if len(sys.argv) < 2:
+            print("Uso: python %s <N>" % sys.argv[0])
+            sys.exit(1)
+
+        for i in range(int(sys.argv[1])):
             word1 = word1 + "a"
             regex = regex + "a?"
         regex = regex + word1
+        print("- N: %s" % sys.argv[1])
         print("- Word: %s" % word1)
         reg = r.add_concatenation(regex)
         print("- Regex: " +reg)
@@ -133,8 +140,8 @@ if __name__ == "__main__":
         t3 = datetime.datetime.utcnow()
         print ("Python implementation ")
         print("Match?: ")
-        print(re.match(regex,word1))
-        
+        print(re.match(regex,word1) != None)
+
         t4 = datetime.datetime.utcnow()
         delta = t4-t3
 
